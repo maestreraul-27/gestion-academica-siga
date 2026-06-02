@@ -92,4 +92,15 @@ function eliminarEstudiante(id) {
     .then(() => obtenerEstudiantes());
 }
 
+const usuarioEstudiantes = JSON.parse(atob(localStorage.getItem("token").split('.')[1]));
+
+if (usuarioEstudiantes.rol === "Profesor") {
+
+    const formulario = document.querySelector(".card");
+    if (formulario) formulario.remove();
+
+    const linkProfesores = document.querySelector("a[href='profesores.html']");
+    if (linkProfesores) linkProfesores.remove();
+}
+
 obtenerEstudiantes();

@@ -94,4 +94,25 @@ function eliminarCalificacion(id) {
     .then(() => obtenerCalificaciones());
 }
 
+const tokenCalificaciones = localStorage.getItem("token");
+if (tokenCalificaciones) {
+    try {
+        const payload64 = tokenCalificaciones.split('.')[1];
+        const usuarioNotas = JSON.parse(atob(payload64));
+
+        if (usuarioNotas.rol === "Estudiante") {
+
+            const formulario = document.querySelector(".card");
+            if (formulario) formulario.remove();
+
+            const linkEst = document.querySelector("a[href='estudiantes.html']");
+            const linkProf = document.querySelector("a[href='profesores.html']");
+            if (linkEst) linkEst.remove();
+            if (linkProf) linkProf.remove();
+        }
+    } catch (e) {
+        console.error("Error al validar el rol en calificaciones", e);
+    }
+}
+
 obtenerCalificaciones();

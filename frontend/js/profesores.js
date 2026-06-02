@@ -39,8 +39,7 @@ async function obtenerProfesores() {
 
 async function crearProfesor() {
     const nombre = document.getElementById("nombre").value.trim();
-    const specialtyInput = document.getElementById("especialidad");
-    const especialidad = specialtyInput ? specialtyInput.value.trim() : "";
+    const especialidad = document.getElementById("especialidad").value.trim();
 
     if (!nombre || !especialidad) {
         alert("Por favor, rellena todos los campos necesarios.");
@@ -57,7 +56,7 @@ async function crearProfesor() {
     });
 
     document.getElementById("nombre").value = "";
-    if(specialtyInput) specialtyInput.value = "";
+    document.getElementById("especialidad").value = "";
 
     obtenerProfesores();
 }

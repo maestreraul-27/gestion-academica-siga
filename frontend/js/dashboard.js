@@ -29,7 +29,6 @@ document.getElementById("infoUsuario").innerHTML = `
 `;
 
 function cargarEstadisticas() {
-
     const datosSimulados = {
         totalEstudiantes: 42,
         totalProfesores: 12,
@@ -42,6 +41,16 @@ function cargarEstadisticas() {
 }
 
 cargarEstadisticas();
+
+if (usuario && usuario.rol === "Estudiante") {
+    const linkEst = document.querySelector("a[href='estudiantes.html']");
+    const linkProf = document.querySelector("a[href='profesores.html']");
+    if (linkEst) linkEst.remove();
+    if (linkProf) linkProf.remove();
+} else if (usuario && usuario.rol === "Profesor") {
+    const linkProf = document.querySelector("a[href='profesores.html']");
+    if (linkProf) linkProf.remove();
+}
 
 function cerrarSesion() {
     localStorage.removeItem("token");
