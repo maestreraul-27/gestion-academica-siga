@@ -94,14 +94,15 @@ function eliminarCalificacion(id) {
     .then(() => obtenerCalificaciones());
 }
 
+// CONTROL VISUAL EN CALIFICACIONES: Restringe vistas para Estudiantes y Profesores
 const tokenCalificaciones = localStorage.getItem("token");
+
 if (tokenCalificaciones) {
     try {
-        const payload64 = tokenCalificaciones.split('.')[1];
-        const usuarioNotas = JSON.parse(atob(payload64));
+        const base64Url = tokenCalificaciones.split('.')[1];
+        const usuarioNotas = JSON.parse(atob(base64Url));
 
         if (usuarioNotas.rol === "Estudiante") {
-
             const formulario = document.querySelector(".card");
             if (formulario) formulario.remove();
 
@@ -110,8 +111,14 @@ if (tokenCalificaciones) {
             if (linkEst) linkEst.remove();
             if (linkProf) linkProf.remove();
         }
+
+        else if (usuarioNotas.rol === "Profesor") {
+            const linkProf = document.querySelector("a[href='profesores.html']");
+            if (linkProf) linkProf.remove();
+      
+        }
     } catch (e) {
-        console.error("Error al validar el rol en calificaciones", e);
+        console.error("Error en filtro de calificaciones:", e);
     }
 }
 
