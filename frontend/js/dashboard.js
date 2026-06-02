@@ -5,10 +5,10 @@ if (!token) {
     window.location.href = "index.html";
 }
 
-// FUNCIÓN CORREGIDA AL 100%: Lee el payload del token de forma instantánea
 function parseJwt(token) {
     try {
-        const base64Url = token.split('.')[1]; // Corrección clave: añadimos [1]
+        const partes = token.split('.');
+        const base64Url = partes[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
         const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
             return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
@@ -29,7 +29,6 @@ if (!usuario) {
     window.location.href = "index.html";
 }
 
-// Inyectar datos del usuario en la tarjeta de bienvenida
 const infoUsuarioContenedor = document.getElementById("infoUsuario");
 if (infoUsuarioContenedor && usuario) {
     infoUsuarioContenedor.innerHTML = `
@@ -38,7 +37,6 @@ if (infoUsuarioContenedor && usuario) {
     `;
 }
 
-// Cargar estadísticas solo para el Administrador
 function cargarEstadisticas() {
     const txtEstudiantes = document.getElementById("total-estudiantes");
     const txtProfesores = document.getElementById("total-profesores");
@@ -55,9 +53,11 @@ function cargarEstadisticas() {
     if (txtCalificaciones) txtCalificaciones.innerText = datosSimulados.totalCalificaciones;
 }
 
-// FILTRO DE ROLES UNIFICADO: Asegura los accesos correctos sin duplicados
+// RESTRICCIÓN CORREGIDA Y BLINDADA CONTRA ERRORES
 function aplicarFiltroDeRoles() {
-    if (!usuario) return;
+    if (!usuario || !usuario.rol) return;
+
+    console.log("Rol actual detectado:", usuario.rol); // Esto te mostrará en F12 qué rol lee
 
     if (usuario.rol === "Estudiante") {
         const linkEst = document.querySelector("a[href='estudiantes.html']");
@@ -67,10 +67,10 @@ function aplicarFiltroDeRoles() {
     } 
     else if (usuario.rol === "Profesor") {
         const linkProf = document.querySelector("a[href='profesores.html']");
-        if (linkProf) linkProf.remove();
+        if (linkProf) linkProf.remove(); // SOLO se borra si encuentra el enlace y si eres Profesor
     } 
     else if (usuario.rol === "Administrador") {
-        // El administrador ve todo, cargamos datos y hacemos visible el contenedor oculto en el HTML
+        // Al Administrador NO se le borra NADA. Obligamos a cargar las tarjetas y mostrarlas
         cargarEstadisticas();
         const panelStats = document.getElementById("contenedor-estadisticas");
         if (panelStats) {
@@ -79,10 +79,9 @@ function aplicarFiltroDeRoles() {
     }
 }
 
-// ORDEN DE EJECUCIÓN: Obligatoria para que el filtro corra al cargar la página
+// Ejecutar la restricción de forma segura
 aplicarFiltroDeRoles();
 
-// Lógica para destruir la sesión activa
 function cerrarSesion() {
     localStorage.removeItem("token");
     window.location.href = "index.html";

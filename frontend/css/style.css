@@ -101,3 +101,23 @@ th {
     background-color: #fff !important;
     color: #212529 !important;
 }
+
+/* ARREGLO DE EMERGENCIA: Fuerza a la barra a mostrar todos los botones en fila */
+.navbar .container-fluid {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+}
+
+.navbar-nav {
+    display: flex !important;
+    flex-direction: row !important; /* Fuerza los botones uno al lado del otro */
+    gap: 8px !important;            /* Separa los botones para que no se peguen */
+    margin-left: auto !important;   /* Los empuja elegantemente a la derecha */
+}
+
+.navbar-brand {
+    color: #0d6efd !important;      /* Asegura el color azul de SIGA-WEB */
+    font-weight: bold !important;
+}

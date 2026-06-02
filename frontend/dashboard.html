@@ -4,24 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard SIGA-WEB</title>
-    <!-- Enlace oficial de Bootstrap igual al de estudiantes.html -->
+    <!-- Enlace oficial de Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="bg-light">
 
-        <!-- Barra de navegación superior blindada -->
+    <!-- Barra de navegación con TODAS las opciones escritas de nacimiento -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
         <div class="container-fluid">
             <span class="navbar-brand fw-bold text-primary">SIGA-WEB</span>
             <div class="navbar-nav ms-auto d-flex flex-row gap-2">
                 <a class="btn btn-outline-light btn-sm active" href="dashboard.html">Inicio</a>
                 <a class="btn btn-outline-light btn-sm" href="estudiantes.html">Estudiantes</a>
+                <a class="btn btn-outline-light btn-sm" href="profesores.html">Profesores</a>
                 <a class="btn btn-outline-light btn-sm" href="calificaciones.html">Calificaciones</a>
             </div>
         </div>
     </nav>
-
 
     <!-- Contenedor Principal del Dashboard -->
     <div class="container mt-5">
@@ -36,7 +36,7 @@
                     </div>
                 </div>
 
-                <!-- Contenedor de estadísticas (Se eliminará por completo vía JS si eres Profesor o Estudiante) -->
+                <!-- Contenedor de estadísticas (Nace oculto para evitar parpadeos feos en Profesores y Alumnos) -->
                 <div id="contenedor-estadisticas" class="row g-4 my-3 text-start" style="display: none;">
                     <div class="col-md-4">
                         <div class="card h-100 shadow-sm border-0 border-top border-primary border-5" style="border-radius: 8px;">
@@ -76,7 +76,7 @@
         </div>
     </div>
 
-    <script src="https://jsdelivr.net"></script>
+    <!-- Quitamos la línea de jsdelivr rota que te ponía lenta la carga -->
     <script src="js/dashboard.js"></script>
 </body>
 </html>
