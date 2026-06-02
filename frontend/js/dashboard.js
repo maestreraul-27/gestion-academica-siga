@@ -24,33 +24,24 @@ if (!usuario) {
 }
 
 document.getElementById("infoUsuario").innerHTML = `
-    <h3>Bienvenido</h3>
-    <p><strong>ID:</strong> ${usuario.id}</p>
-    <p><strong>Rol:</strong> ${usuario.rol}</p>
+    <p class="mb-1"><strong>ID de Usuario:</strong> ${usuario.id}</p>
+    <p class="mb-0"><strong>Rol asignado:</strong> <span class="badge bg-primary fs-6">${usuario.rol}</span></p>
 `;
 
-let menu = "";
+function cargarEstadisticas() {
 
-if (usuario.rol === "Administrador") {
-    menu = `
-        <a href="estudiantes.html">Estudiantes</a><br>
-        <a href="profesores.html">Profesores</a><br>
-        <a href="calificaciones.html">Calificaciones</a><br>
-    `;
-} 
-else if (usuario.rol === "Profesor") {
-    menu = `
-        <a href="estudiantes.html">Estudiantes</a><br>
-        <a href="calificaciones.html">Calificaciones</a><br>
-    `;
-} 
-else if (usuario.rol === "Estudiante") {
-    menu = `
-        <a href="calificaciones.html">Mis Calificaciones</a><br>
-    `;
+    const datosSimulados = {
+        totalEstudiantes: 42,
+        totalProfesores: 12,
+        totalCalificaciones: 156
+    };
+
+    document.getElementById("total-estudiantes").innerText = datosSimulados.totalEstudiantes;
+    document.getElementById("total-profesores").innerText = datosSimulados.totalProfesores;
+    document.getElementById("total-calificaciones").innerText = datosSimulados.totalCalificaciones;
 }
 
-document.getElementById("menu").innerHTML = menu;
+cargarEstadisticas();
 
 function cerrarSesion() {
     localStorage.removeItem("token");

@@ -21,7 +21,9 @@ function obtenerProfesor(req, res) {
 function crearProfesor(req, res) {
     const { nombre, especialidad } = req.body;
 
-    const nuevoId = profesores[profesores.length - 1].id + 1;
+    const nuevoId = profesores.length > 0 
+        ? profesores[profesores.length - 1].id + 1 
+        : 1;
 
     const nuevoProfesor = {
         id: nuevoId,
@@ -30,7 +32,6 @@ function crearProfesor(req, res) {
     };
 
     profesores.push(nuevoProfesor);
-
     res.status(201).json(nuevoProfesor);
 }
 

@@ -21,19 +21,21 @@ function obtenerCalificacion(req, res) {
 function crearCalificacion(req, res) {
     const { estudiante, asignatura, nota } = req.body;
 
-    const nuevoId = calificaciones[calificaciones.length - 1].id + 1;
+    const nuevoId = calificaciones.length > 0 
+        ? calificaciones[calificaciones.length - 1].id + 1 
+        : 1;
 
     const nuevaCalificacion = {
         id: nuevoId,
         estudiante,
         asignatura,
-        nota
+        nota: parseInt(nota)
     };
 
     calificaciones.push(nuevaCalificacion);
-
     res.status(201).json(nuevaCalificacion);
 }
+
 
 function actualizarCalificacion(req, res) {
     const id = parseInt(req.params.id);

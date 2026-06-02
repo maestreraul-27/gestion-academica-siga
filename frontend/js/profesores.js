@@ -12,7 +12,6 @@ function getToken() {
 }
 
 async function obtenerProfesores() {
-
     const res = await fetch(API, {
         headers: {
             "Authorization": "Bearer " + getToken()
@@ -20,19 +19,18 @@ async function obtenerProfesores() {
     });
 
     const data = await res.json();
-
     const tabla = document.getElementById("tablaProfesores");
     tabla.innerHTML = "";
 
-    data.forEach(e => {
+    data.forEach(p => {
         tabla.innerHTML += `
             <tr>
-                <td>${e.id}</td>
-                <td>${e.nombre}</td>
-                <td>${e.especialidad}</td>
+                <td class="fw-bold">${p.id}</td>
+                <td>${p.nombre}</td>
+                <td>${p.especialidad}</td>
                 <td>
-                    <button onclick="editarProfesor(${e.id})">Editar</button>
-                    <button onclick="eliminarProfesor(${e.id})">Eliminar</button>
+                    <button class="btn btn-warning btn-sm me-1 px-3" onclick="editarProfesor(${p.id})">Editar</button>
+                    <button class="btn btn-danger btn-sm px-3" onclick="eliminarProfesor(${p.id})">Eliminar</button>
                 </td>
             </tr>
         `;
@@ -40,10 +38,14 @@ async function obtenerProfesores() {
 }
 
 async function crearProfesor() {
+    const nombre = document.getElementById("nombre").value.trim();
+    const specialtyInput = document.getElementById("especialidad");
+    const especialidad = specialtyInput ? specialtyInput.value.trim() : "";
 
-    const id = document.getElementById("id").value;
-    const nombre = document.getElementById("nombre").value;
-    const especialidad = document.getElementById("especialidad").value;
+    if (!nombre || !especialidad) {
+        alert("Por favor, rellena todos los campos necesarios.");
+        return;
+    }
 
     await fetch(API, {
         method: "POST",
@@ -51,16 +53,20 @@ async function crearProfesor() {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + getToken()
         },
-        body: JSON.stringify({ id, nombre, especialidad })
+        body: JSON.stringify({ nombre, especialidad })
     });
+
+    document.getElementById("nombre").value = "";
+    if(specialtyInput) specialtyInput.value = "";
 
     obtenerProfesores();
 }
 
 function editarProfesor(id) {
-
     const nombre = prompt("Nuevo nombre:");
     const especialidad = prompt("Nueva especialidad:");
+
+    if (nombre === null || especialidad === null) return;
 
     fetch(`${API}/${id}`, {
         method: "PUT",
@@ -74,6 +80,7 @@ function editarProfesor(id) {
 }
 
 function eliminarProfesor(id) {
+    if (!confirm("¿Estás seguro de que deseas eliminar este profesor?")) return;
 
     fetch(`${API}/${id}`, {
         method: "DELETE",

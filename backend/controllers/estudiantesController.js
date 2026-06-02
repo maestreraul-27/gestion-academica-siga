@@ -19,9 +19,11 @@ function obtenerEstudiante(req, res) {
 }
 
 function crearEstudiante(req, res) {
-    const { nombre, programa} = req.body;
+    const { nombre, programa } = req.body;
 
-    const nuevoId = estudiantes[estudiantes.length -1].id + 1;
+    const nuevoId = estudiantes.length > 0 
+        ? estudiantes[estudiantes.length - 1].id + 1 
+        : 1;
 
     const nuevoEstudiante = {
         id: nuevoId,
@@ -33,6 +35,7 @@ function crearEstudiante(req, res) {
 
     res.status(201).json(nuevoEstudiante);
 }
+
 
 function actualizarEstudiante(req, res) {
     const id = parseInt(req.params.id);

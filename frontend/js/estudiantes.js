@@ -12,7 +12,6 @@ function getToken() {
 }
 
 async function obtenerEstudiantes() {
-
     const res = await fetch(API, {
         headers: {
             "Authorization": "Bearer " + getToken()
@@ -25,14 +24,15 @@ async function obtenerEstudiantes() {
     tabla.innerHTML = "";
 
     data.forEach(e => {
+
         tabla.innerHTML += `
             <tr>
-                <td>${e.id}</td>
+                <td class="fw-bold">${e.id}</td>
                 <td>${e.nombre}</td>
                 <td>${e.programa}</td>
                 <td>
-                    <button onclick="editarEstudiante(${e.id})">Editar</button>
-                    <button onclick="eliminarEstudiante(${e.id})">Eliminar</button>
+                    <button class="btn btn-warning btn-sm me-1 px-3" onclick="editarEstudiante(${e.id})">Editar</button>
+                    <button class="btn btn-danger btn-sm px-3" onclick="eliminarEstudiante(${e.id})">Eliminar</button>
                 </td>
             </tr>
         `;
@@ -40,10 +40,13 @@ async function obtenerEstudiantes() {
 }
 
 async function crearEstudiante() {
+    const nombre = document.getElementById("nombre").value.trim();
+    const programa = document.getElementById("programa").value.trim();
 
-    const id = document.getElementById("id").value;
-    const nombre = document.getElementById("nombre").value;
-    const programa = document.getElementById("programa").value;
+    if (!nombre || !programa) {
+        alert("Por favor, rellena todos los campos necesarios.");
+        return;
+    }
 
     await fetch(API, {
         method: "POST",
@@ -51,16 +54,20 @@ async function crearEstudiante() {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + getToken()
         },
-        body: JSON.stringify({ id, nombre, programa })
+        body: JSON.stringify({ nombre, programa })
     });
+
+    document.getElementById("nombre").value = "";
+    document.getElementById("programa").value = "";
 
     obtenerEstudiantes();
 }
 
 function editarEstudiante(id) {
-
     const nombre = prompt("Nuevo nombre:");
     const programa = prompt("Nuevo programa:");
+
+    if (nombre === null || programa === null) return;
 
     fetch(`${API}/${id}`, {
         method: "PUT",
@@ -74,6 +81,7 @@ function editarEstudiante(id) {
 }
 
 function eliminarEstudiante(id) {
+    if (!confirm("¿Estás seguro de que deseas eliminar este estudiante?")) return;
 
     fetch(`${API}/${id}`, {
         method: "DELETE",
@@ -83,3 +91,5 @@ function eliminarEstudiante(id) {
     })
     .then(() => obtenerEstudiantes());
 }
+
+obtenerEstudiantes();
